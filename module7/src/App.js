@@ -10,6 +10,8 @@ function App() {
     .then(data => console.log(data))*/
 
   const [catFact, setCatFact] = useState("");
+  const [name, setName] = useState("");
+  const [predictedAge, setPredictedAge] = useState(0);
 
   const fetchCatFact = () => {
     Axios.get("https://catfact.ninja/fact").then((res) => {
@@ -17,15 +19,30 @@ function App() {
     });
   }
 
-  useEffect(() => {
+  const fetchAge = () => {
+    Axios.get(`https://api.agify.io/?name=${name}`).then((res) => {
+      setPredictedAge(res.data.age)
+    });
+    
+  }
+
+ /* useEffect(() => {
     fetchCatFact();
-  }, []);
+  }, []);*/
   
 
   return (
     <div className="App">
       <button onClick={fetchCatFact}>Generate Cat Fact</button>
       <p>{catFact}</p>
+
+      <input 
+        placeholder="Enter Name" 
+        onChange={(event) => {setName(event.target.value)}} 
+      />
+
+      <button onClick={fetchAge}>Predict Age</button>
+      <h1>Predicted Age: {predictedAge}</h1>
     </div>
   );
 }
