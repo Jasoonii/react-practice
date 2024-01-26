@@ -12,6 +12,8 @@ function App() {
   const [catFact, setCatFact] = useState("");
   const [name, setName] = useState("");
   const [predictedAge, setPredictedAge] = useState(0);
+  const [excuse, setExcuse] = useState("");
+  const [excuseCategory, setExcuseCategory] = useState("")
 
   const fetchCatFact = () => {
     Axios.get("https://catfact.ninja/fact").then((res) => {
@@ -24,6 +26,12 @@ function App() {
       setPredictedAge(res.data.age)
     });
     
+  }
+
+  const fetchExcuse = () => {
+    Axios.get(`https://excuser-three.vercel.app/v1/excuse/${excuseCategory}`).then((res) => {
+      setExcuse(res.data[0].excuse);
+    })
   }
 
  /* useEffect(() => {
@@ -43,6 +51,12 @@ function App() {
 
       <button onClick={fetchAge}>Predict Age</button>
       <h1>Predicted Age: {predictedAge}</h1>
+
+      <h1>Generate an Excuse</h1>
+      <button onClick={() => { setExcuseCategory("party"); fetchExcuse() }}>Party</button>
+      <button onClick={() => { setExcuseCategory("family"); fetchExcuse() }}>Family</button>
+      <button onClick={() => { setExcuseCategory("office"); fetchExcuse() }}>Office</button>
+      <p>Generated Excuse: {excuse}</p>
     </div>
   );
 }
